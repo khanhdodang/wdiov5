@@ -10,6 +10,5 @@ Automation testing script using ES6, Babel 6, Mocha
 
 ## Commands
 ```
-npm test
  user="khanhdo" key="3bfd8955-e252-xxx-xxxx-beb057b2b849" deviceName="Galaxy J5 Prime" npm test
 ```

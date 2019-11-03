@@ -1,16 +1,16 @@
 import 'babel-polyfill'
 import 'colors'
 import BPromise from 'bluebird'
-import {assert} from 'chai'
+import { assert } from 'chai'
 import API from './api'
 import Device from './device'
-import {remote} from 'webdriverio'
+import { remote } from 'webdriverio'
 import configs from '../configs'
 
 describe('hooks - wait for Kobiton device available for next retry', async () => {
   let devicesList
   let browser
-  const cloudGroup = {onlineDeviceOnly: true, groupType: 'cloud'}
+  const cloudGroup = { onlineDeviceOnly: true, groupType: 'cloud' }
   const loopCount = configs.loopCount
 
   let itIdx = 0
@@ -76,7 +76,7 @@ describe('hooks - wait for Kobiton device available for next retry', async () =>
         await submitBtn.click()
 
         await browser.getTitle()
-      } catch(error) {
+      } catch (error) {
         browser && await browser.deleteSession()
       } finally {
         browser && await browser.deleteSession()

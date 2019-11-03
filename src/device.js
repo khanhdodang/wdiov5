@@ -3,7 +3,7 @@ import moment from 'moment'
 import API from './api'
 
 class Device extends API {
-  
+
   /**
    * Retrieve devices in 3 groups: private/org, favorite and cloud devices.
    */
@@ -31,21 +31,21 @@ class Device extends API {
     const devicesGroups = await this._getDevices()
 
     console.log('devicesGroups', devicesGroups)
-    
+
     let devices
     switch (groupType.toLowerCase()) {
-      case 'private':
-        devices = devicesGroups.privateDevices.sort((a, b) => a.id - b.id)
-        break
-      case 'cloud':
-        devices = devicesGroups.cloudDevices
-        break
-      case 'favorite':
-        devices = devicesGroups.favoriteDevices
-        break
-      default:
-        devices = devicesGroups.cloudDevices.concat(devicesGroups.privateDevices)
-        break
+    case 'private':
+      devices = devicesGroups.privateDevices.sort((a, b) => a.id - b.id)
+      break
+    case 'cloud':
+      devices = devicesGroups.cloudDevices
+      break
+    case 'favorite':
+      devices = devicesGroups.favoriteDevices
+      break
+    default:
+      devices = devicesGroups.cloudDevices.concat(devicesGroups.privateDevices)
+      break
     }
 
     devices = devices.filter((d) => !d.support.appiumDisabled)
