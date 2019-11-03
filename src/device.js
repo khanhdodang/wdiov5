@@ -47,6 +47,8 @@ class Device extends API {
       break
     }
 
+    if (!devices) return null
+
     devices = devices.filter((d) => !d.support.appiumDisabled)
 
     if (platformName) {
@@ -77,7 +79,7 @@ class Device extends API {
    * @param deviceName {string} - Device Name
    */
   async getDevices({
-    groupType = 'Cloud',
+    groupType = 'cloud',
     platformName,
     platformVersion,
     deviceName,

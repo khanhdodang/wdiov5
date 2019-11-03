@@ -12,7 +12,7 @@ describe('hooks - wait for Kobiton device available for next retry', async () =>
   let browser
   const filter = { onlineDeviceOnly: true, groupType: 'cloud', deviceName: configs.deviceName }
   const loopCount = configs.loopCount
-  const TIMEOUT = 10 * 60 * 1000
+  
   let itIdx = 0
 
   before(async () => {
@@ -31,19 +31,14 @@ describe('hooks - wait for Kobiton device available for next retry', async () =>
 
     let continuePollingCheck = true
     const pollingStartedAt = new Date()
+    const TIMEOUT = 10 * 60 * 1000
 
     do {
       try {
-        console.log('devicesList', devicesList)
-        assert.isAtLeast(devicesList.length, 1, 'At least 1 device is online.')
         browser = await remote(configs.desiredCaps)
         continuePollingCheck = false
 
       } catch (error) {
-        if (error.data) {
-          console.error(`init driver: ${error.data}`)
-        }
-
         console.log(`Device is busy!!! Retrying...`)
         let attemptDuration = new Date() - pollingStartedAt
         if (attemptDuration > TIMEOUT) {
