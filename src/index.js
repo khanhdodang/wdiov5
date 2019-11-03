@@ -3,14 +3,16 @@ import BPromise from 'bluebird'
 import API from './api'
 import Device from './device'
 import { remote } from 'webdriverio'
+import { assert } from 'chai'
 import configs from '../configs'
 
 describe('hooks - wait for Kobiton device available for next retry', async () => {
+
   let devicesList
   let browser
-  const cloudGroup = { onlineDeviceOnly: true, groupType: 'cloud' }
+  const filter = { onlineDeviceOnly: true, groupType: 'cloud', deviceName: configs.deviceName }
   const loopCount = configs.loopCount
-
+  const TIMEOUT = 10 * 60 * 1000
   let itIdx = 0
 
   before(async () => {
@@ -25,22 +27,21 @@ describe('hooks - wait for Kobiton device available for next retry', async () =>
   beforeEach(async () => {
     itIdx++
     const device = new Device()
-    devicesList = await device.getDevices(cloudGroup)
-
-    let desiredCaps = configs.desiredCaps
+    devicesList = await device.getDevices(filter)
 
     let continuePollingCheck = true
     const pollingStartedAt = new Date()
-    const TIMEOUT = 10 * 60 * 1000
 
     do {
       try {
-        browser = await remote(desiredCaps)
+        console.log('devicesList', devicesList)
+        assert.isAtLeast(devicesList.length, 1, 'At least 1 device is online.')
+        browser = await remote(configs.desiredCaps)
         continuePollingCheck = false
 
       } catch (error) {
         if (error.data) {
-          console.error(`init driver: ${err.data}`)
+          console.error(`init driver: ${error.data}`)
         }
 
         console.log(`Device is busy!!! Retrying...`)
@@ -56,13 +57,16 @@ describe('hooks - wait for Kobiton device available for next retry', async () =>
   })
 
   afterEach(async () => {
-    console.log(`[${itIdx}/${loopCount}] Ended afterEach - ${new Date().toString()}`)
+    console.log(`[${itIdx}/${loopCount}] Ended - ${new Date().toString()}`)
   })
 
   for (let i = 0; i < loopCount; i++) {
     it(`my test at ${itIdx}`, async () => {
       try {
-        await browser.getSession()
+        const sessionInfo = await browser.getSession()
+        const kobitonSessionId = sessionInfo.kobitonSessionId
+        console.log(`${configs.portalUrl}/sessions/${sessionInfo.kobitonSessionId}`)
+
         await browser.url('https://duckduckgo.com/')
         await browser.getUrl()
 
