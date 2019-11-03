@@ -1,7 +1,5 @@
 import 'babel-polyfill'
-import 'colors'
 import BPromise from 'bluebird'
-import { assert } from 'chai'
 import API from './api'
 import Device from './device'
 import { remote } from 'webdriverio'
@@ -30,7 +28,6 @@ describe('hooks - wait for Kobiton device available for next retry', async () =>
     devicesList = await device.getDevices(cloudGroup)
 
     let desiredCaps = configs.desiredCaps
-    // desiredCaps.capabilities.sessionName = `KOB-6419 - Unsync ${itIdx}`
 
     let continuePollingCheck = true
     const pollingStartedAt = new Date()

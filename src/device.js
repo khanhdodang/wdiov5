@@ -1,5 +1,4 @@
 import BPromise from 'bluebird'
-import moment from 'moment'
 import API from './api'
 
 class Device extends API {
