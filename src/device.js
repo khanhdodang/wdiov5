@@ -29,8 +29,6 @@ class Device extends API {
   } = {}) {
     const devicesGroups = await this._getDevices()
 
-    console.log('devicesGroups', devicesGroups)
-
     let devices
     switch (groupType.toLowerCase()) {
     case 'private':
